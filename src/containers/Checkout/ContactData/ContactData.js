@@ -8,57 +8,55 @@ class ContactData extends Component {
 	state = {
 		orderForm: {
 			name: {
-				elementType:'input',
-				elementConfig:{
-					type:'text',
-					placeholder:'Your Name'
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your Name'
 				},
-				value:''
+				value: ''
 			},
 			street: {
-				elementType:'input',
-				elementConfig:{
-					type:'text',
-					placeholder:'Your Street'
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your Street'
 				},
-				value:''
+				value: ''
 			},
 			zipCode: {
-				elementType:'input',
-				elementConfig:{
-					type:'text',
-					placeholder:'Your ZIP Code'
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your ZIP Code'
 				},
-				value:''
+				value: ''
 			},
 			country: {
-				elementType:'input',
-				elementConfig:{
-					type:'text',
-					placeholder:'Your Country'
+				elementType: 'input',
+				elementConfig: {
+					type: 'text',
+					placeholder: 'Your Country'
 				},
-				value:''
+				value: ''
 			},
 			email: {
-				elementType:'input',
-				elementConfig:{
-					type:'email',
-					placeholder:'Your Mail'
+				elementType: 'input',
+				elementConfig: {
+					type: 'email',
+					placeholder: 'Your Mail'
 				},
-				value:''
+				value: ''
 			},
 			deliveryMethod: {
-				elementType:'select',
-				elementConfig:{
-				options:[
-					{ value:'firstclass', displayValue:'First Class'},
-					{ value:'fastest', displayValue:'Fastest'},
-					{ value:'cheapest', displayValue:'Cheapest'},
+				elementType: 'select',
+				elementConfig: {
+					options: [
+						{ value: 'firstclass', displayValue: 'First Class' },
+						{ value: 'fastest', displayValue: 'Fastest' },
+						{ value: 'cheapest', displayValue: 'Cheapest' },
 					],
-					
-
 				},
-				value:''
+				value: ''
 			}
 		},
 
@@ -82,24 +80,36 @@ class ContactData extends Component {
 				this.setState({ loading: false });
 			});
 	}
+	inputChangedHandler = (event, inputIdentifier) => {
+		const updateOrderForm = {
+			...this.state.orderForm
+		}
+		const updatedFormElement = {
+			...updateOrderForm[ inputIdentifier ]
+		}
+		updatedFormElement.value = event.target.value;
+		updateOrderForm[inputIdentifier]=updatedFormElement
+		this.setState({orderForm:updateOrderForm})
+	}
 	render() {
-		let formElementArray=[];
-		for(let key in this.state.orderForm){
+		let formElementArray = [];
+		for (let key in this.state.orderForm) {
 			formElementArray.push({
-				id:key,
-				config:this.state.orderForm[key]
+				id: key,
+				config: this.state.orderForm[ key ]
 			})
 		}
 		let form = (
 			<form>
-				{formElementArray.map(formElement=>(
-					<Input 
-					key={formElement.id}
-					elementType={formElement.config.elementType}
-					elementConfig={formElement.config.elementConfig}
-					value={formElement.config.value}
+				{ formElementArray.map(formElement => (
+					<Input
+						key={ formElement.id }
+						elementType={ formElement.config.elementType }
+						elementConfig={ formElement.config.elementConfig }
+						value={ formElement.config.value }
+						changed={ (event) => this.inputChangedHandler(event, formElement.id) }
 					/>
-				))}
+				)) }
 				<Button btnType="Success" clicked={ this.orderHandler }>ORDER</Button>
 			</form>
 		);
