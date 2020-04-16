@@ -82,10 +82,11 @@ class ContactData extends Component {
 							elementConfig: {
 									options: [
 											{value: 'fastest', displayValue: 'Fastest'},
-											{value: 'cheapest', displayValue: 'Cheapest'}
+											{value: 'cheapest', displayValue: 'Cheapest'},
+											{value: 'firstclass', displayValue: 'First Class'},
 									]
 							},
-							value: '',
+							value: 'cheapest',
 							validation: {},
 							valid: true
 					}
@@ -103,7 +104,7 @@ class ContactData extends Component {
 			}
 			const order = {
 					ingredients: this.props.ingredients,
-					price: this.props.price,
+					price: parseFloat(this.props.price),
 					orderData: formData
 			}
 			axios.post( '/orders.json', order )
