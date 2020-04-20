@@ -14,15 +14,22 @@ export const purchaseBurgerFail=(error)=>{
 		error:error
 	}
 }
-export const purchaseBurgerStart=(orderData)=>{
-	return dispach=>{
+export const purchaseBurgerStart=()=>{
+	return{
+		type:actionTypes.PURSCHASE_BURGER_START
+	}
+
+}
+export const purchaseBurger=(orderData)=>{
+	return dispatch=>{
+		dispatch(purchaseBurgerStart())
 		axios.post('/orders.json', orderData)
 		.then(response => {
 		console.log(response.data)
-		dispach(purchaseBurgerSuccess(response.data,orderData))
+		dispatch(purchaseBurgerSuccess(response.data,orderData))
 		})
 		.catch(error => {
-		dispach(purchaseBurgerFail(error))
+		dispatch(purchaseBurgerFail(error))
 		});
 	}
 }
