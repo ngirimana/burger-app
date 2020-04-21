@@ -6,7 +6,7 @@ const initialState = {
 	token: null,
 	userId: null,
 	error: null,
-	loading: true
+	loading: false
 }
 const authStart = (state, action) => {
 	return updatedObject(state, { error: null, loading: true })
@@ -16,15 +16,14 @@ const authSuccess = (state, action) => {
 		 token:action.idToken,
 		 userId:action.userId,
 		error: null, 
-		loading: true
+		loading: false
 	 })
 }
 const authFail = (state, action) => {
 	return updatedObject(state, {
-		
 		error: action.error, 
-	
-	 })
+		loading:false
+	})
 }
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
