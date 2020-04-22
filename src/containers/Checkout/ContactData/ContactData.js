@@ -5,7 +5,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner'
 import classes from './ContactData.module.css';
 import axios from '../../../axios-orders';
 import Input from '../../../components/UI/Input/Input';
-import withOrderHandler from '../../../hoc/WithErrorHandler/WithErrorHandler';
+import withOrderHandler from '../../../hoc/withErrorHandler/WithErrorHandler';
 import * as actions from '../../../store/actions/index'
 
 class ContactData extends Component {
