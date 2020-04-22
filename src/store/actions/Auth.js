@@ -6,11 +6,11 @@ export const authStart = () => {
 		type: actionTypes.AUTH_START
 	}
 }
-export const authSucces = (token,userId) => {
+export const authSucces = (token, userId) => {
 	return {
 		type: actionTypes.AUTH_SUCCESS,
-		idToken:token,
-		userId:userId
+		idToken: token,
+		userId: userId
 	}
 }
 export const authFail = (error) => {
@@ -19,7 +19,19 @@ export const authFail = (error) => {
 		error: error
 	}
 }
-export const auth = (email, password,isSugnUp) => {
+export const logOut = () => {
+	return {
+		type: actionTypes.AUTH_LOGOUT
+	}
+}
+export const checkAuthTimeOut = (expirationTime) => {
+	return dispatch => {
+		setTimeout(() => {
+			dispatch(logOut())
+		}, expirationTime*1000)
+	}
+}
+export const auth = (email, password, isSugnUp) => {
 	return dispatch => {
 		dispatch(authStart());
 		const authData = {
@@ -27,14 +39,15 @@ export const auth = (email, password,isSugnUp) => {
 			password: password,
 			returnSecureToken: true
 		}
-		let url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBScNADplXoVQ8gEPf7Tl5gBX3vRo2DkmA'
-	if(!isSugnUp){
-		url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBScNADplXoVQ8gEPf7Tl5gBX3vRo2DkmA'
-	}
+		let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBScNADplXoVQ8gEPf7Tl5gBX3vRo2DkmA'
+		if (!isSugnUp) {
+			url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBScNADplXoVQ8gEPf7Tl5gBX3vRo2DkmA'
+		}
 		axios.post(url, authData)
-			.then(response=>{
+			.then(response => {
 				console.log(response)
-				dispatch(authSucces(response.data.idToken,response.data.localId))
+				dispatch(authSucces(response.data.idToken, response.data.localId));
+				dispatch(checkAuthTimeOut(response.data.expiresIn))
 			})
 			.catch(err => {
 				dispatch(authFail(err.response.data.error))
