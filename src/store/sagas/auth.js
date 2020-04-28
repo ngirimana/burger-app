@@ -33,6 +33,24 @@ export function* authUserSaga(action) {
 		yield put(actions.authSuccess(response.data.idToken, response.data.localId));
 		yield put(actions.checkAuthTimeout(response.data.expiresIn));
 
-	} catch (error ) {
+	} catch (error) {
 		yield put(actions.authFail(error.response.data.error));
-	}};
+	}
+};
+
+export function* authCheckStateSaga(action) {
+	const token = yield localStorage.getItem('token');
+	if (!token) {
+		yield put(actions.logout());
+	} else {
+		const expirationDate = yield new Date(localStorage.getItem('expirationDate'));
+		if (expirationDate <= new Date()) {
+			yield put(actions.logout());
+		} else {
+			const userId = yield localStorage.getItem('userId');
+			yield put(actions.authSuccess(token, userId));
+			yield put(actions.checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
+		}
+	}
+};
+
